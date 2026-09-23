@@ -1,0 +1,175 @@
+@import "tailwindcss";
+/* Forzando recarga de Turbopack */
+@import "../styles/tokens.css";
+@import "../styles/fullcalendar-overrides.css";
+
+@theme {
+  --color-blue-50: #eef2f6;
+  --color-blue-100: #dce5ec;
+  --color-blue-200: #c2d2df;
+  --color-blue-300: #9cb5ca;
+  --color-blue-400: #7193b0;
+  --color-blue-500: #5B728A;
+  --color-blue-600: #5B728A;
+  --color-blue-700: #4a5c70;
+  --color-blue-800: #3b4a59;
+  --color-blue-900: #303d4a;
+
+  --color-sky-50: #eef2f6;
+  --color-sky-100: #dce5ec;
+  --color-sky-500: #5B728A;
+  --color-sky-600: #5B728A;
+  --color-sky-700: #4a5c70;
+
+  --color-emerald-50: #edf4ef;
+  --color-emerald-100: #d2e4d6;
+  --color-emerald-500: #4F8A5B;
+  --color-emerald-600: #4F8A5B;
+  --color-emerald-700: #3f6e49;
+
+  --color-amber-50: #fdf8ef;
+  --color-amber-100: #faeed6;
+  --color-amber-200: #f4dca8;
+  --color-amber-500: #C58B1C;
+  --color-amber-600: #C58B1C;
+  --color-amber-700: #9e6f16;
+  --color-amber-800: #765311;
+
+  --color-red-50: #fdf2f2;
+  --color-red-100: #f9dfdf;
+  --color-red-200: #f1baba;
+  --color-red-300: #e78f8f;
+  --color-red-400: #db5c5c;
+  --color-red-500: #A32020;
+  --color-red-600: #A32020;
+  --color-red-700: #801818;
+  --color-red-800: #6b1414;
+  --color-red-900: #571010;
+
+  --color-rose-50: #fdf2f2;
+  --color-rose-100: #f9dfdf;
+  --color-rose-200: #f1baba;
+  --color-rose-300: #e78f8f;
+  --color-rose-400: #db5c5c;
+  --color-rose-500: #A32020;
+  --color-rose-600: #A32020;
+  --color-rose-700: #801818;
+  --color-rose-800: #6b1414;
+  --color-rose-900: #571010;
+
+  --color-gray-50: #F8F9FA;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ABOGATECH — Global Styles
+   ──────────────────────────────────────────────────────────────
+   Tokens viven en ../styles/tokens.css
+   Aquí solo: overrides de Tailwind, base styles, y animaciones.
+   ══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* -- Tailwind CSS overrides -- */
+  --background: var(--color-surface);
+  --foreground: var(--color-text-primary);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BASE STYLES
+   ══════════════════════════════════════════════════════════════ */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar estilizado ───────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-text-muted);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-secondary);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   KEYFRAME ANIMATIONS
+   ══════════════════════════════════════════════════════════════ */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(204, 0, 0, 0.3); }
+  50%      { box-shadow: 0 0 0 6px rgba(204, 0, 0, 0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Utility animation classes ──────────────────────────────── */
+.animate-fade-up {
+  animation: fadeUp 0.5s var(--transition-smooth) both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s var(--transition-fast) both;
+}
+
+.animate-card-in {
+  animation: cardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-in {
+  animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── Skeleton loading ───────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, var(--color-surface-hover) 25%, #e0e0e0 50%, var(--color-surface-hover) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}

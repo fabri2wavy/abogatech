@@ -1,0 +1,714 @@
+/* ══════════════════════════════════════════════════════════════
+   Clientes Page – CSS Module  (tokens → tokens.css)
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Page header ───────────────────────────────────────────── */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  animation: fadeUp 0.45s ease both;
+}
+
+@media (min-width: 640px) {
+  .header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+@media (min-width: 640px) {
+  .title { font-size: var(--text-3xl); }
+}
+
+.subtitle {
+  margin-top: 0.25rem;
+  color: var(--color-text-secondary);
+}
+
+/* ── Table wrapper ─────────────────────────────────────────── */
+.tableWrapper {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-surface-border);
+  box-shadow: var(--shadow-sm);
+  animation: fadeUp 0.45s ease both;
+  animation-delay: 100ms;
+}
+
+/* ── Table head ────────────────────────────────────────────── */
+.tableHead {
+  background: var(--color-navy);
+  border-bottom: 1px solid var(--color-navy-border);
+}
+
+.tableHeadCell {
+  padding: 0.875rem 1.5rem;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-gold-light);
+}
+
+/* ── Table row ─────────────────────────────────────────────── */
+.tableRow {
+  border-bottom: 1px solid var(--color-surface-border);
+  transition: background var(--transition-fast);
+}
+
+.tableRow:hover {
+  background: var(--color-surface-hover);
+}
+
+/* ── Table cells ───────────────────────────────────────────── */
+.tableCell {
+  padding: 1rem 1.5rem;
+}
+
+.clientName {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.ciBadge {
+  display: inline-block;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-family: var(--font-body);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  background: var(--color-surface-hover);
+  color: var(--color-text-secondary);
+}
+
+.contactPrimary {
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+}
+
+.contactSecondary {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.dateCell {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.actionsCell {
+  text-align: right;
+}
+
+/* ── Empty / Loading states ────────────────────────────────── */
+.stateContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.spinner {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-surface-border);
+  border-top-color: var(--color-gold);
+  animation: spin 0.8s linear infinite;
+}
+
+.emptyIcon {
+  opacity: 0.5;
+}
+
+.emptyTitle {
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.emptyHint {
+  font-size: var(--text-sm);
+  margin-top: 0.25rem;
+  color: var(--color-text-muted);
+}
+
+/* ── Mobile card list ──────────────────────────────────────── */
+.mobileCard {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--color-surface-border);
+}
+
+.mobileCard:last-child {
+  border-bottom: none;
+}
+
+.mobileCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-sm);
+}
+
+.mobileName {
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+}
+
+.mobileCi {
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-hover);
+  color: var(--color-text-muted);
+}
+
+.mobileCardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mobileContact {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+.mobileDate {
+  font-size: var(--text-xs);
+  margin-top: 0.125rem;
+  color: var(--color-text-muted);
+}
+
+/* ── Modal overlay ─────────────────────────────────────────── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: var(--spacing-md);
+  background: rgba(26, 26, 26, 0.7);
+  backdrop-filter: blur(6px);
+}
+
+.modalContainer {
+  width: 100%;
+  max-width: 42rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--color-surface-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-surface-border);
+  animation: cardIn 0.35s var(--transition-smooth) both;
+}
+
+/* ── Section titles inside modal ──────────────────────────── */
+.sectionTitle {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sectionDivider {
+  height: 1px;
+  background: var(--color-surface-border);
+  margin: var(--spacing-md) 0;
+}
+
+/* ── Modal header ──────────────────────────────────────────── */
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--color-navy);
+  border-bottom: 1px solid var(--color-navy-border);
+}
+
+.modalTitle {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-text-on-dark);
+}
+
+.modalClose {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  font-size: 1.125rem;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.modalClose:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Modal form body ───────────────────────────────────────── */
+.modalBody {
+  padding: var(--spacing-lg);
+}
+
+.fieldGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (min-width: 640px) {
+  .fieldGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.modalFooter {
+  padding-top: var(--spacing-md);
+  display: flex;
+  gap: 0.75rem;
+}
+
+.modalFooter > * {
+  flex: 1;
+}
+
+/* ── Accordion toggle ─────────────────────────────────────── */
+.accordionToggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--color-surface-border);
+  background: transparent;
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.accordionToggle:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-text-muted);
+}
+
+.accordionLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.accordionHint {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  flex: 1;
+  text-align: left;
+}
+
+.accordionChevron {
+  color: var(--color-text-muted);
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+/* ── Accordion content (collapsible) ──────────────────────── */
+.accordionContent {
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.25s ease, margin-top 0.25s ease;
+}
+
+/* ── Utility: unstyled link ────────────────────────────────── */
+.linkUnstyled {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STEPPER (Multi-Step Wizard)
+   ══════════════════════════════════════════════════════════════ */
+
+.stepper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md) var(--spacing-xl);
+}
+
+/* ── Single step container ─────────────────────────────────── */
+.stepItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
+  min-width: 120px;
+}
+
+/* ── Circle indicator ──────────────────────────────────────── */
+.stepCircle {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  font-family: var(--font-body);
+  border: 2px solid var(--color-surface-border);
+  background: var(--color-surface-card);
+  color: var(--color-text-muted);
+  transition:
+    background var(--transition-base),
+    border-color var(--transition-base),
+    color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.stepCircle.active {
+  background: var(--color-navy);
+  border-color: var(--color-navy);
+  color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(26, 26, 26, 0.1);
+}
+
+.stepCircle.completed {
+  background: var(--color-info);
+  border-color: var(--color-info);
+  color: #ffffff;
+}
+
+/* ── Step label ────────────────────────────────────────────── */
+.stepLabel {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-align: center;
+  transition: color var(--transition-base);
+  letter-spacing: 0.02em;
+}
+
+.stepLabel.active {
+  color: var(--color-text-primary);
+}
+
+.stepLabel.completed {
+  color: var(--color-info);
+}
+
+/* ── Connector line between steps ──────────────────────────── */
+.stepConnector {
+  flex: 1;
+  height: 2px;
+  background: var(--color-surface-border);
+  align-self: flex-start;
+  margin-top: 1.125rem; /* vertically center with circle */
+  min-width: 60px;
+  position: relative;
+  overflow: hidden;
+  transition: background var(--transition-base);
+}
+
+.stepConnector.completed {
+  background: var(--color-info);
+}
+
+/* ── Step content section ──────────────────────────────────── */
+.stepContent {
+  animation: stepFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── Step section header ───────────────────────────────────── */
+.stepHeader {
+  margin-bottom: var(--spacing-lg);
+}
+
+.stepTitle {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.stepDescription {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* ── Step field grid ───────────────────────────────────────── */
+.stepGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (min-width: 640px) {
+  .stepGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.fieldFullWidth {
+  grid-column: 1 / -1;
+}
+
+/* ── Validation error on field ─────────────────────────────── */
+.fieldError {
+  margin-top: 0.25rem;
+  font-size: var(--text-xs);
+  color: var(--color-danger);
+  animation: shakeX 0.4s ease both;
+}
+
+.inputError {
+  border-color: var(--color-danger) !important;
+}
+
+.inputError:focus {
+  box-shadow: 0 0 0 3px var(--color-danger-bg) !important;
+}
+
+/* ── Animations ────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes stepFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shakeX {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-4px); }
+  40%      { transform: translateX(4px); }
+  60%      { transform: translateX(-3px); }
+  80%      { transform: translateX(2px); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BADGES: Etapa Comercial + Tipo Cliente
+   ══════════════════════════════════════════════════════════════ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.2rem 0.625rem;
+  border-radius: var(--radius-full, 9999px);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  white-space: nowrap;
+  transition: opacity var(--transition-fast);
+}
+
+.badgeActivo {
+  background: var(--color-info-bg);
+  color: var(--color-info);
+  border: 1px solid var(--color-info-border);
+}
+
+.badgePotencial {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+  border: 1px solid var(--color-warning-border);
+}
+
+.badgeEmpresa {
+  background: rgba(109, 76, 155, 0.08);
+  color: #6d4c9b;
+  border: 1px solid rgba(109, 76, 155, 0.2);
+}
+
+.badgePersona {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  border: 1px solid var(--color-success-border);
+}
+
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full, 9999px);
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.badgeGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RADIO CARDS: Tipo Cliente + Etapa Comercial selectors
+   ══════════════════════════════════════════════════════════════ */
+
+.radioCardGroup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.radioCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 0.75rem;
+  border: 2px solid var(--color-surface-border);
+  border-radius: var(--radius-xl, 0.75rem);
+  background: var(--color-surface-card);
+  cursor: pointer;
+  transition:
+    border-color var(--transition-base),
+    background var(--transition-base),
+    box-shadow var(--transition-base);
+  text-align: center;
+}
+
+.radioCard:hover {
+  border-color: var(--color-text-muted);
+  background: var(--color-surface-hover);
+}
+
+.radioCard.selected {
+  border-color: var(--color-navy);
+  background: rgba(32, 33, 36, 0.03);
+  box-shadow: 0 0 0 3px rgba(32, 33, 36, 0.08);
+}
+
+.radioCardIcon {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-full, 9999px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-hover);
+  color: var(--color-text-secondary);
+  transition: background var(--transition-base), color var(--transition-base);
+}
+
+.radioCard.selected .radioCardIcon {
+  background: var(--color-navy);
+  color: #ffffff;
+}
+
+.radioCardLabel {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.radioCardHint {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+.radioCardInput {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* ── Etapa selector (inline pills) ────────────────────────── */
+.etapaPillGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.etapaPill {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  border: 1.5px solid var(--color-surface-border);
+  border-radius: var(--radius-full, 9999px);
+  background: var(--color-surface-card);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  transition:
+    border-color var(--transition-base),
+    background var(--transition-base),
+    color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.etapaPill:hover {
+  border-color: var(--color-text-muted);
+}
+
+.etapaPill.activoPill {
+  border-color: var(--color-info);
+  background: var(--color-info-bg);
+  color: var(--color-info);
+  box-shadow: 0 0 0 2px rgba(91, 114, 138, 0.1);
+}
+
+.etapaPill.potencialPill {
+  border-color: var(--color-warning);
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+  box-shadow: 0 0 0 2px rgba(197, 139, 28, 0.1);
+}
+
+/* ── Conditional fields enter animation ───────────────────── */
+.conditionalFields {
+  animation: fieldSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fieldSlideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,88 @@
+:root {
+  /* ── Colores Primarios (Dark / Charcoal) ──────────────────── */
+  --color-navy: #202124;
+  /* Sidebar */
+  --color-navy-mid: #2a2b2e;
+  --color-navy-card: #303134;
+  --color-navy-light: #4a4b50;
+  --color-navy-border: rgba(255, 255, 255, 0.10);
+
+  /* ── Colores Accent (Rojo Iturri) ─────────────────────────── */
+  --color-gold: #A32020;
+  /* Rojo corporativo */
+  --color-gold-light: #C92E2E;
+  --color-gold-dim: rgba(163, 32, 32, 0.12);
+  --color-gold-glow: rgba(163, 32, 32, 0.06);
+
+  /* Superficie */
+  --color-surface: #F8F9FA;
+  /* Fondo */
+  --color-surface-card: #FFFFFF;
+  /* Tarjetas */
+  --color-surface-hover: #F1F3F5;
+  /* Hover */
+  --color-surface-border: #E5E7EB;
+  /* Bordes */
+
+  /* Texto */
+  --color-text-primary: #2B2B2B;
+  --color-text-secondary: #6B7280;
+  --color-text-muted: #9CA3AF;
+  --color-text-on-dark: #F9FAFB;
+  --color-text-on-gold: #FFFFFF;
+
+  /* Estados Semánticos */
+  --color-success: #4F8A5B;
+  --color-success-bg: rgba(79, 138, 91, 0.1);
+  --color-success-border: rgba(79, 138, 91, 0.25);
+
+  --color-warning: #C58B1C;
+  --color-warning-bg: rgba(197, 139, 28, 0.1);
+  --color-warning-border: rgba(197, 139, 28, 0.25);
+
+  --color-danger: #ef4444;
+  --color-danger-bg: rgba(239, 68, 68, 0.08);
+  --color-danger-border: rgba(239, 68, 68, 0.2);
+
+  --color-info: #5B728A;
+  --color-info-bg: rgba(91, 114, 138, 0.08);
+  --color-info-border: rgba(91, 114, 138, 0.2);
+
+  /* Tipografía */
+  --font-brand: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+
+  /* Espaciado */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
+  --shadow-gold: 0 4px 20px rgba(204, 0, 0, 0.2);
+
+  /* Bordes */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+
+  /* Transiciones */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
