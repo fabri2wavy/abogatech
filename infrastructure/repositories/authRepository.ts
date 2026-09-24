@@ -10,6 +10,8 @@
    ══════════════════════════════════════════════════════════════ */
 
 import { createClient } from '@/infrastructure/supabase/client';
+import type { FirmRole } from '@/domain/entities/FirmContext';
+import { obtenerContextoUsuarioActual } from './firmRepository';
 
 /* ── Iniciar sesión ─────────────────────────────────────────── */
 export async function iniciarSesion(
@@ -44,7 +46,8 @@ export async function registrarUsuario(
 /* ── Cerrar sesión ──────────────────────────────────────────── */
 export async function cerrarSesion(): Promise<void> {
   const supabase = createClient();
-  await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
+  if (error) throw error;
 }
 
 /* ── Obtener ID del usuario autenticado actual ──────────────── */
@@ -57,25 +60,12 @@ export async function obtenerUsuarioActualId(): Promise<string | null> {
 /* ── Obtener perfil completo con rol (para sidebar/header) ──── */
 export interface PerfilConRol {
   email: string;
-  rol: string;
+  rol: FirmRole;
 }
 
+/** Compatibilidad transitoria: el rol es de la firma activa, no del profile. */
 export async function obtenerPerfilConRol(): Promise<PerfilConRol | null> {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) return null;
-
-  const { data: perfil } = await supabase
-    .from('perfiles')
-    .select('rol')
-    .eq('id', user.id)
-    .maybeSingle();
-
-  if (!perfil) return null;
-
-  return {
-    email: user.email || '',
-    rol: perfil.rol,
-  };
+  const context = await obtenerContextoUsuarioActual();
+  if (context.status !== 'ready') return null;
+  return { email: context.user.email, rol: context.role };
 }

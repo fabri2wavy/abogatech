@@ -8,8 +8,8 @@ interface AuthCardProps {
 }
 export function AuthCard({
   children,
-  title = "Iturri & Asociados",
-  subtitle = "Sistema de Gestión Legal",
+  title = "ABOGATECH",
+  subtitle = "Gestión Legal",
 }: AuthCardProps) {
   const parts = title.split("&");
   const hasSplit = parts.length === 2;
@@ -26,7 +26,7 @@ export function AuthCard({
 
         {/* Cabecera de marca */}
         <div className={styles.header}>
-          <div className={styles.emblem}>I&A</div>
+          <div className={styles.emblem}>A</div>
           <h1 className={styles.firmName}>
             {hasSplit ? (
               <>
@@ -51,7 +51,7 @@ export function AuthCard({
 
         {/* Footer */}
         <p className={styles.footer}>
-          Abogatech &copy; {new Date().getFullYear()}
+          ABOGATECH &copy; {new Date().getFullYear()}
         </p>
       </div>
     </main>

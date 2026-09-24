@@ -1,31 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { obtenerPerfilConRol } from "@/infrastructure/repositories/authRepository";
+import { useFirm } from "@/components/firm/FirmProvider";
+import { roleLabels } from "@/components/firm/roleLabels";
 
 export default function PerfilUsuario() {
-  const [rol, setRol] = useState<string>("Cargando...");
-  const [email, setEmail] = useState<string>("");
+  const { role, user } = useFirm();
+  const rol = role ? roleLabels[role] : 'Sin rol asignado';
+  const email = user?.email ?? '';
+  const nombre = user?.nombreCompleto ?? '';
 
-  useEffect(() => {
-    async function obtenerPerfil() {
-      const perfil = await obtenerPerfilConRol();
-
-      if (perfil) {
-        setEmail(perfil.email);
-        setRol(perfil.rol);
-      } else {
-        setRol("Sin rol asignado");
-      }
-    }
-
-    obtenerPerfil();
-  }, []);
-
-  /* Generar iniciales del email para el avatar */
-  const iniciales = email
-    ? email.substring(0, 2).toUpperCase()
-    : "??";
+  const iniciales = nombre.trim()
+    ? nombre.trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join('').toUpperCase()
+    : email.substring(0, 2).toUpperCase();
 
   return (
     <div
@@ -48,7 +34,11 @@ export default function PerfilUsuario() {
           {iniciales}
         </div>
         <div className="min-w-0 flex-1">
+          <p title={nombre} className="truncate text-sm font-semibold text-[var(--color-text-on-dark)]">
+            {nombre}
+          </p>
           <p
+            title={email}
             className="text-xs truncate"
             style={{ color: "var(--color-text-muted)" }}
           >
@@ -60,7 +50,7 @@ export default function PerfilUsuario() {
               style={{ background: "var(--color-success)" }}
             />
             <p
-              className="text-sm font-semibold capitalize truncate"
+              className="text-sm truncate"
               style={{ color: "var(--color-text-on-dark)" }}
             >
               {rol}

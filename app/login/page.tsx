@@ -29,7 +29,8 @@ export default function LoginPage() {
       setLoading(false);
     } else {
       setMensaje("¡Login exitoso! Entrando al sistema...");
-      router.push("/dashboard");
+      router.replace("/dashboard");
+      router.refresh();
     }
   };
 
@@ -52,7 +53,7 @@ export default function LoginPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          placeholder="admin@iturri.com"
+          placeholder="correo@firma.com"
         />
 
         <FormField

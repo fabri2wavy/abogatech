@@ -1,22 +1,14 @@
-import { createClient as createServerClient } from '@/infrastructure/supabase/server';
+import 'server-only';
 import type { UsuarioPerfil } from '@/domain/entities/UsuarioPerfil';
-import { mapearUsuario } from './usuarioRepository';
+import { obtenerContextoUsuarioActualServer } from './firmRepository.server';
 
+/** Compatibilidad transitoria: rol del membership de la firma activa, nunca global. */
 export async function obtenerPerfilActualServer(): Promise<UsuarioPerfil | null> {
-  const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) return null;
-
-  const { data, error } = await supabase
-    .from('perfiles')
-    .select('id, nombres, apellido_paterno, apellido_materno, rol')
-    .eq('id', user.id)
-    .maybeSingle();
-
-  if (!data && user) {
-    return { id: user.id, nombre_completo: 'Socio Director', rol: 'admin' };
-  }
-
-  return data ? mapearUsuario(data) : null;
+  const context = await obtenerContextoUsuarioActualServer();
+  if (context.status !== 'ready') return null;
+  return {
+    id: context.user.userId,
+    nombre_completo: context.user.nombreCompleto,
+    rol: context.role,
+  };
 }

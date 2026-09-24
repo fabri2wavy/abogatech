@@ -1,10 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import BotonSalir from "@/components/layout/BotonSalir";
 import PerfilUsuario from "@/components/layout/PerfilUsuario";
 import WidgetAsistente from "@/components/WidgetAsistente";
+import { useFirm } from "@/components/firm/FirmProvider";
+import { FirmSwitcher } from "@/components/firm/FirmSwitcher";
+import type { FirmRole } from "@/domain/entities/FirmContext";
 
 type NavItem = {
   href: string;
@@ -15,22 +18,32 @@ type NavItem = {
 
 export default function DashboardClientLayout({
   children,
-  rol,
-  userId,
 }: {
   children: React.ReactNode;
-  rol: string;
-  userId: string | null;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const closeMenuButton = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
+  const context = useFirm();
+  useEffect(() => {
+    if (sidebarOpen) closeMenuButton.current?.focus();
+  }, [sidebarOpen]);
+
+  function closeSidebar() {
+    setSidebarOpen(false);
+    menuButton.current?.focus();
+  }
+
+  if (context.status !== 'ready') return null;
+  const { role: rol, user: { userId } } = context;
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard";
     return pathname.startsWith(href);
   };
 
-  const getNavItems = (userRol: string): NavItem[] => {
+  const getNavItems = (userRol: FirmRole): NavItem[] => {
     const inicioItem = {
       href: "/dashboard",
       label: "Inicio",
@@ -150,9 +163,8 @@ export default function DashboardClientLayout({
       ];
 
       if (userRol === 'asociado_senior') {
-        // Asociado Senior puede ver finanzas, equipo y reportes
+        // FRONT-02: no se presume permiso financiero para asociado senior.
         items.push({ href: "/dashboard/equipo", label: "Equipo", icon: equipoIcon });
-        items.push({ href: "/dashboard/finanzas", label: "Finanzas", icon: finanzasIcon });
         items.push({ href: "/dashboard/reportes", label: "Reportes", icon: reportesIcon });
       }
 
@@ -171,43 +183,57 @@ export default function DashboardClientLayout({
         { href: "/dashboard/finanzas", label: "Finanzas", icon: finanzasIcon },
         { href: "/dashboard/perfil", label: "Mi Perfil", icon: perfilIcon, section: "MI CUENTA" },
       ];
-    } else {
+    } else if (userRol === 'cliente') {
       return [
         inicioItem,
         { href: "/dashboard/casos", label: "Mi Expediente", icon: casosIcon },
       ];
     }
+    return [];
   };
 
   const navItems = getNavItems(rol);
 
   return (
-    <div className="flex h-screen" style={{ background: "var(--color-surface)" }}>
+    <div className="flex h-dvh" style={{ background: "var(--color-surface)" }}
+      onKeyDown={(event) => { if (sidebarOpen && event.key === 'Escape') closeSidebar(); }}>
       {/* ── Overlay mobile ──────────────────────────────────── */}
       {sidebarOpen && (
-        <div
-          className="fixed inset-0 z-40 lg:hidden"
-          style={{ background: "rgba(26, 26, 26, 0.6)", backdropFilter: "blur(4px)" }}
-          onClick={() => setSidebarOpen(false)}
+        <button type="button" aria-label="Cerrar menú" tabIndex={-1}
+          className="fixed inset-0 z-40 bg-[var(--color-navy)] opacity-70 lg:hidden"
+          onClick={closeSidebar}
         />
       )}
 
       {/* ── Sidebar ─────────────────────────────────────────── */}
       <aside
+        id="dashboard-sidebar"
+        aria-label="Menú principal"
+        onKeyDown={(event) => {
+          if (!sidebarOpen || event.key !== 'Tab' || window.matchMedia('(min-width: 1024px)').matches) return;
+          const controls = event.currentTarget.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), select:not([disabled])');
+          const first = controls[0];
+          const last = controls[controls.length - 1];
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault(); last?.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault(); first?.focus();
+          }
+        }}
         className={`
           fixed inset-y-0 left-0 z-50 w-[272px] flex flex-col
           transform transition-transform duration-300 ease-in-out
-          lg:relative lg:translate-x-0
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+          lg:relative lg:visible lg:translate-x-0
+          ${sidebarOpen ? "visible translate-x-0" : "invisible -translate-x-full"}
         `}
         style={{
-          background: "linear-gradient(180deg, var(--color-navy) 0%, #111111 100%)",
+          background: "var(--color-navy)",
           borderRight: "1px solid var(--color-navy-border)",
         }}
       >
         {/* Logo / brand */}
         <div
-          className="px-6 py-5 flex items-center gap-3"
+          className="px-6 py-5 flex shrink-0 items-center gap-3"
           style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.08)" }}
         >
           <div
@@ -219,7 +245,7 @@ export default function DashboardClientLayout({
               fontFamily: "var(--font-brand)",
             }}
           >
-            I&A
+            A
           </div>
           <div>
             <h2
@@ -230,19 +256,25 @@ export default function DashboardClientLayout({
                 letterSpacing: "0.02em",
               }}
             >
-              Iturri <span style={{ color: "var(--color-gold)" }}>&</span> Asociados
+              ABOGATECH
             </h2>
             <p
               className="text-xs tracking-widest uppercase"
               style={{ color: "var(--color-text-muted)", letterSpacing: "0.15em" }}
             >
-              CRM Legal
+              Gestión Legal
             </p>
           </div>
+          <button ref={closeMenuButton} type="button" onClick={closeSidebar} aria-label="Cerrar menú"
+            className="ml-auto p-2 text-[var(--color-text-on-dark)] lg:hidden">
+            <span aria-hidden="true">×</span>
+          </button>
         </div>
 
+        <div className="shrink-0"><FirmSwitcher /></div>
+
         {/* Navegación */}
-        <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto min-h-[50%]">
+        <nav aria-label="Navegación principal" className="flex-1 px-4 py-6 space-y-1 overflow-y-auto min-h-0">
           {navItems.map((item) => {
             const active = isActive(item.href);
             return (
@@ -257,6 +289,8 @@ export default function DashboardClientLayout({
                 )}
                 <a
                   href={item.href}
+                  aria-current={active ? 'page' : undefined}
+                  onClick={() => setSidebarOpen(false)}
                   className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
                   style={{
                     background: active
@@ -292,7 +326,7 @@ export default function DashboardClientLayout({
 
         {/* Footer con perfil y salir */}
         <div
-          className="px-4 py-4"
+          className="shrink-0 px-4 py-4"
           style={{ borderTop: "1px solid rgba(255, 255, 255, 0.08)" }}
         >
           <PerfilUsuario />
@@ -311,10 +345,14 @@ export default function DashboardClientLayout({
           }}
         >
           <button
+            ref={menuButton}
+            type="button"
             onClick={() => setSidebarOpen(true)}
             className="p-2 rounded-lg transition-colors"
             style={{ color: "var(--color-gold-light)" }}
             aria-label="Abrir menú"
+            aria-expanded={sidebarOpen}
+            aria-controls="dashboard-sidebar"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="3" y1="12" x2="21" y2="12" />
@@ -326,7 +364,7 @@ export default function DashboardClientLayout({
             className="text-sm font-semibold"
             style={{ color: "var(--color-text-on-dark)", fontFamily: "var(--font-brand)" }}
           >
-            I&A
+            ABOGATECH
           </span>
           <div className="w-10" /> {/* Spacer para centrar el título */}
         </header>

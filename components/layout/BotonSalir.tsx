@@ -1,23 +1,33 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { cerrarSesion } from "@/infrastructure/repositories/authRepository";
 import { Button } from "@/components/ui/Button";
 
 export default function BotonSalir() {
-  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleLogout = async () => {
-    await cerrarSesion();
-    router.refresh();
-    router.push("/login");
+    setLoading(true);
+    setError(null);
+    try {
+      await cerrarSesion();
+      window.location.assign('/login');
+    } catch {
+      setError('No se pudo cerrar la sesión. Intenta nuevamente.');
+      setLoading(false);
+    }
   };
 
   return (
+    <>
+    {error && <p role="alert" className="text-[var(--color-danger)]">{error}</p>}
     <Button
       variant="ghost"
       fullWidth
       onClick={handleLogout}
+      loading={loading}
       className="justify-start px-4 text-[var(--color-danger)] hover:!text-red-400 hover:!bg-red-500/10"
     >
       <svg 
@@ -36,5 +46,6 @@ export default function BotonSalir() {
       </svg>
       Cerrar Sesión
     </Button>
+    </>
   );
 }
